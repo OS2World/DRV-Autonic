@@ -1,0 +1,82 @@
+WATCOM Linker Version 11.0c
+Copyright by Sybase, Inc., and its subsidiaries, 1985, 2000.
+Created on:       01/12/13 22:50:09
+Executable Image: autonic.sys
+creating an OS/2 16-bit dynamic link library
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          0001:0000            0000006a
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+_HEADER                DATA           DGROUP         0001:0000       0000001e
+CONST                  DATA           DGROUP         0001:001e       00000012
+CONST2                 DATA           DGROUP         0001:0030       00000000
+_DATA                  DATA           DGROUP         0001:0030       00000000
+_BSS                   BSS            DGROUP         0001:0030       00000004
+_INITDATA              INITDATA       DGROUP         0001:0034       00000036
+_TEXT                  CODE           AUTO           0002:0000       0000004e
+_INITCODE              CODE           AUTO           0002:004e       0000006a
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: devsegs.obj(F:\source\autonic\devsegs.asm)
+0001:0034      _OffFinalDS
+0002:004e      _OffFinalCS
+Module: strategy.obj(F:\source\autonic\strategy.c)
+0002:001e      Strategy_
+0001:0030      _DevHlp
+Module: stratini.obj(F:\source\autonic\stratini.c)
+0002:004f      StratInit_
+Module: header.obj(F:\source\autonic\header.c)
+0001:0000*     _AUTONIC
+
+
+                        +----------------------+
+                        |   Imported Symbols   |
+                        +----------------------+
+
+Symbol                              Module
+======                              ======
+
+DOSWRITE                            DOSCALLS
+DOSEXECPGM                          DOSCALLS
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+F:\WATCOM\lib286\os2\os2.lib
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  0200 (512.)
+Memory size:  0122 (290.)
+Link time: 00:00.00

@@ -1,0 +1,54 @@
+#===================================================================
+#
+#   Auto-dependency information
+#
+#===================================================================
+OS22_H = $(%WATCOM)\h\os2
+C32FLAGS  = -i=$(OS22_H) -bt=OS2 -zq
+WC32    = wcc386 $(C32FLAGS)
+
+OS21_H = $(%WATCOM)\h\os21x
+C16FLAGS  = -i=$(OS21_H) -bt=os2 -ms -5 -omi -s -zdp -zff -zgf -zu -zl -zq
+WC16    = wcc $(C16FLAGS)
+
+ASM     = wasm $(AFLAGS)
+
+.SUFFIXES:
+.SUFFIXES: .obj .c .asm
+.c.obj: .AUTODEPEND
+        $(WC16) $*.c
+
+.asm.obj: .AUTODEPEND
+        $(ASM) $*.asm
+
+all:    .SYMBOLIC autonic.sys snifpci.exe
+        @echo All done!
+        @echo To install driver using CONFIG.SYS: DEVICE=[path]AUTONIC.SYS
+
+HROBJS  =  devsegs.obj  strategy.obj stratini.obj header.obj
+autonic.sys : $(HROBJS)
+        @%create autonic.lnk
+        @%append autonic.lnk name autonic.sys
+        @%append autonic.lnk sys os2 dll initglobal
+        @%append autonic.lnk option protmode
+        @%append autonic.lnk option map
+        @%append autonic.lnk option quiet
+        @%append autonic.lnk option stack=0
+        @%append autonic.lnk lib os2
+        @for %f in ($(HROBJS)) do @%append autonic.lnk file %f
+        @%append autonic.lnk segment type DATA SHARED PRELOAD
+        @%append autonic.lnk segment '_TEXT' PRELOAD IOPL
+        @%append autonic.lnk segment '_INITCODE' PRELOAD IOPL
+        wlink  @autonic.lnk
+
+snifpci.exe: snifpci.obj
+ @%write snifpci.lk1 FIL snifpci.obj
+ @%append snifpci.lk1
+ *wlink name snifpci d all SYS os2 op m op st=32767 op maxe=25 op q op symf &
+ @snifpci.lk1
+ exehdr /newfiles snifpci.exe
+
+snifpci.obj: snifpci.c
+ *wcc snifpci.c -i=F:\WATCOM\h;F:\WATCOM\h\os21x -w4 -e25 -zp1 -zq -od -d2 -&
+bt=os2 -ml
+

@@ -1,0 +1,14 @@
+name autonic.sys
+sys os2 dll initglobal
+option protmode
+option map
+option quiet
+option stack=0
+lib os2
+file devsegs.obj
+file strategy.obj
+file stratini.obj
+file header.obj
+segment type DATA SHARED PRELOAD
+segment '_TEXT' PRELOAD IOPL
+segment '_INITCODE' PRELOAD IOPL
